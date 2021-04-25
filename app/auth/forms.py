@@ -14,13 +14,13 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     email = StringField('Your Email Address',validators=[Required(),Email()])
     username = StringField('Enter your username',validators = [Required()])
-    password = PasswordField('Password',validators = [Required(),EqualTo('password2',message = 'Passwords do not match!')])
-    password2 = PasswordField('Confirm Password',validators = [Required()])
+    password = PasswordField('Password',validators = [Required(),EqualTo('password_confirm',message = 'Passwords do not match!')])
+    password_confirm = PasswordField('Confirm Password',validators = [Required()])
     submit = SubmitField('Sign Up')
 
 
     def validate_email(self,data_field):
-        if User.query.filter_by(email =data_field.data).first():
+        if User.query.filter_by(email = data_field.data).first():
             raise ValidationError('Email address already registered')
 
     def validate_username(self,data_field):
