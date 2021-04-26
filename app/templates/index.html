@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>This is the homepage</h1>
+<li><a href="{{url_for('auth.register')}}">Register</a></li>
+<li><a href="{{url_for('auth.login')}}">Sign in</a></li>
+{% endblock %}
