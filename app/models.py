@@ -42,11 +42,11 @@ class Post(db.Model):
     category = db.Column(db.String, nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def save(self):
+    def save_post(self):
         db.session.add(self)
         db.session.commit()
 
-    def delete(self):
+    def delete_post(self):
         db.session.delete(self)
         db.session.commit()
 
