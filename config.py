@@ -7,7 +7,8 @@ class Config:
     """
     SECRET_KEY ='jhfhlfhw'
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://koi:password@localhost/pitch'
-
+    SIMPLEMDE_JS_IIFE = True
+    SIMPLEMDE_USE_CDN = True
 
 class ProdConfig(Config):
     """

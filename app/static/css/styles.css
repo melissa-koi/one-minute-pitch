@@ -1,20 +1,24 @@
-#bgimage{
-    background-image:url('https://bit.ly/2QOpC4L');
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    z-index:1;
-    padding-top:70px;
-    padding-bottom:130px;
+*{
+    padding:0;
+    margin:0;
+    box-sizing:border-box;
 }
-
 .bgimage{
     margin-top: 100px;
     height:100vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.219), rgba(0, 0, 0, 0.356)),url(https://ecija.com/wp-content/uploads/2020/10/diego-ph-fIq0tET6llw-unsplash-1.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.373), rgba(0, 0, 0, 0.356)),url(https://ecija.com/wp-content/uploads/2020/10/diego-ph-fIq0tET6llw-unsplash-1.jpg);
     background-size:cover;
     background-position: center;
     background-repeat: no-repeat;
     padding-top: 40px;
      z-index:1;
+}
+.headline{
+    font-size: 50px;
+    font-weight: bolder;
+    font-style: italic;
+    color: black;
+}
+.intro{
+    color: black;
 }
