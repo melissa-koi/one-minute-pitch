@@ -7,9 +7,13 @@ from datetime import datetime
 class User(UserMixin,db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer,primary_key = True)
-    username = db.Column(db.String(255))
+    username = db.Column(db.String(255),unique=True,)
     email = db.Column(db.String(255), unique=True, index=True)
     pass_secure = db.Column(db.String(255))
+    posts = db.relationship('Post', backref='user', lazy='dynamic')
+    comment = db.relationship('Comment', backref='user', lazy='dynamic')
+    bio = db.Column(db.String(255))
+    profile_pic_path = db.Column(db.String())
 
     @property
     def password(self):
@@ -32,15 +36,34 @@ class User(UserMixin,db.Model):
         return f'User {self.username}'
 
 
-class Post(db.Model):
+class Post(db.Model, UserMixin):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
-    user_id = db.Column(db.String, nullable=False)
-    post = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post = db.Column(db.Text, nullable=False)
     comment = db.relationship('Comment', backref='post', lazy='dynamic')
     category = db.Column(db.String, nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    author = db.Column(db.String)
+   # liked = db.relationship('PostLike',foreign_keys='PostLike.users_id',backref='posts', lazy='dynamic')
+
+
+    def like_post(self, post):
+        if not self.has_liked_post(post):
+            like = postLike(users_id=self.id, post_id=post.id)
+            db.session.add(like)
+
+    def unlike_post(self, post):
+        if self.has_liked_post(post):
+            postLike.query.filter_by(
+                users_id=self.id,
+                post_id=post.id).delete()
+
+    def has_liked_post(self, post):
+        return postLike.query.filter(
+            postLike.users_id == self.id,
+            postLike.post_id == post.id).count() > 0
 
     def save_post(self):
         db.session.add(self)
@@ -52,6 +75,12 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post Title: {self.title}"
+
+# class PostLike(db.Model):
+#     __tablename__ = 'post_like'
+#     id = db.Column(db.Integer, primary_key=True)
+#     users_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
 
 
 class Comment(db.Model):
@@ -76,6 +105,7 @@ class Comment(db.Model):
 
     def __repr__(self):
         return f'Comments: {self.comment}'
+
 
 @login_manager.user_loader
 def load_user(user_id):

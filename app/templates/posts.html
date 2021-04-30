@@ -4,13 +4,14 @@
 {% block content %}
 <div class="container">
     <div class="card-group">
-        {% for post in posts %}
+        {% for post in posts_display %}
         <div class="card" style="min-width: 25rem; max-width: 28rem; margin-top: 30px; margin-bottom: 30px;margin-right: 10px;">
+            <div class="card-header">{{post.category}}</div>
             <div class="card-body">
                 <h3 class="card-title">{{post.title}}</h3>
                 <p class="card-text">{{post.post}}</p>
-<!--                <a href="{{article.url}}" class="btn btn-outline-primary"><h6>OpenInWeb</h6></a>-->
             </div>
+            <footer class="blockquote-footer">By:<cite title="Source Title">{{post.author}}</cite></footer>
             <div class="card-footer text-muted">
                 <h5>Published On: {{ post.date_created }}</h5>
             </div>
