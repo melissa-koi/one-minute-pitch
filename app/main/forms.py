@@ -8,7 +8,6 @@ class CommentForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class PostForm(FlaskForm):
-    title = StringField('Title', validators=[Required()])
     category = SelectField('Category', choices=[('Interview Pitch', 'Interview Pitch'), ('Sales Pitch', 'Sales Pitch'), ('Promotion Pitch', 'Promotion Pitch') , ('Pickup Lines', 'Pickup Lines') , ('Business Pitch', 'Business Pitch')],
                            validators=[Required()])
     post = TextAreaField('Pitch', validators=[Required()])

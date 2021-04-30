@@ -106,7 +106,6 @@ class Comment(db.Model):
     def __repr__(self):
         return f'Comments: {self.comment}'
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
