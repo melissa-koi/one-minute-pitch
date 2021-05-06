@@ -6,7 +6,7 @@ class Config:
     General configuration class
     """
     SECRET_KEY ='jhfhlfhw'
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://koi:password@localhost/pitch'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://koi:password@localhost/pitches'
     SIMPLEMDE_JS_IIFE = True
     SIMPLEMDE_USE_CDN = True
 

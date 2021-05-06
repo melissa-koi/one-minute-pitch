@@ -39,31 +39,14 @@ class User(UserMixin,db.Model):
 class Post(db.Model, UserMixin):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     post = db.Column(db.Text, nullable=False)
     comment = db.relationship('Comment', backref='post', lazy='dynamic')
     category = db.Column(db.String, nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     author = db.Column(db.String)
-   # liked = db.relationship('PostLike',foreign_keys='PostLike.users_id',backref='posts', lazy='dynamic')
-
-
-    def like_post(self, post):
-        if not self.has_liked_post(post):
-            like = postLike(users_id=self.id, post_id=post.id)
-            db.session.add(like)
-
-    def unlike_post(self, post):
-        if self.has_liked_post(post):
-            postLike.query.filter_by(
-                users_id=self.id,
-                post_id=post.id).delete()
-
-    def has_liked_post(self, post):
-        return postLike.query.filter(
-            postLike.users_id == self.id,
-            postLike.post_id == post.id).count() > 0
+    up_vote = db.relationship('Upvote', backref='post', lazy='dynamic')
+    down_vote = db.relationship('Downvote', backref='post', lazy='dynamic')
 
     def save_post(self):
         db.session.add(self)
@@ -75,13 +58,6 @@ class Post(db.Model, UserMixin):
 
     def __repr__(self):
         return f"Post Title: {self.title}"
-
-# class PostLike(db.Model):
-#     __tablename__ = 'post_like'
-#     id = db.Column(db.Integer, primary_key=True)
-#     users_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-#     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
-
 
 class Comment(db.Model):
     __tablename__ = 'comments'
@@ -105,6 +81,64 @@ class Comment(db.Model):
 
     def __repr__(self):
         return f'Comments: {self.comment}'
+
+
+class Upvote(db.Model):
+    __tablename__ = 'upvotes'
+    id = db.Column(db.Integer, primary_key=True)
+    upvote = db.Column(db.Integer, default=1)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def upvote(cls, id):
+        upvote_post = Upvote(user=current_user, post_id=id)
+        upvote_post.save()
+
+    @classmethod
+    def query_upvotes(cls, id):
+        upvote = Upvote.query.filter_by(post_id=id).all()
+        return upvote
+
+    @classmethod
+    def all_upvotes(cls):
+        upvotes = Upvote.query.order_by('id').all()
+        return upvotes
+
+    def __repr__(self):
+        return f'{self.user_id}:{self.post_id}'
+
+
+class Downvote(db.Model):
+    __tablename__ = 'downvotes'
+    id = db.Column(db.Integer, primary_key=True)
+    downvote = db.Column(db.Integer, default=1)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def downvote(cls, id):
+        downvote_post = Downvote(user=current_user, post_id=id)
+        downvote_post.save()
+
+    @classmethod
+    def query_downvotes(cls, id):
+        downvote = Downvote.query.filter_by(post_id=id).all()
+        return downvote
+
+    @classmethod
+    def all_downvotes(cls):
+        downvote = Downvote.query.order_by('id').all()
+        return downvote
+
+    def __repr__(self):
+        return f'{self.user_id}:{self.post_id}'
 
 @login_manager.user_loader
 def load_user(user_id):
