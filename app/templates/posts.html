@@ -12,7 +12,7 @@
             </div>
             <footer class="blockquote-footer my-2">By: <cite title="Source Title">{{post.author}}</cite></footer>
             <div class="text-center">
-                <a href="/comment/{{post.id}}" class="btn btn-outline-success">Comment</a>
+                <a href= "{{url_for('main.comment')}}" class="btn btn-outline-success">Comment</a>
                 <a href="/like/{{post.id}}" class="btn btn-success">like{{post.up_vote.count()}}</a>
                 <a href="/dislike/{{post.id}}" class="btn btn-success">Dislike{{post.down_vote.count()}}</a>
             </div>

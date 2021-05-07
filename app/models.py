@@ -4,6 +4,12 @@ from flask_login import UserMixin
 from . import login_manager
 from datetime import datetime
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
+
 class User(UserMixin,db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer,primary_key = True)
@@ -62,8 +68,8 @@ class Post(db.Model, UserMixin):
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
     comment = db.Column(db.Text(), nullable=False)
 
     def save(self):
@@ -140,6 +146,3 @@ class Downvote(db.Model):
     def __repr__(self):
         return f'{self.user_id}:{self.post_id}'
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)

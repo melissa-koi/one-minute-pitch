@@ -4,7 +4,7 @@
     box-sizing:border-box;
 }
 .bgimage{
-    margin-top: 100px;
+    margin-top: 0px;
     height:100vh;
     background-image: linear-gradient(rgba(0, 0, 0, 0.373), rgba(0, 0, 0, 0.356)),url(https://ecija.com/wp-content/uploads/2020/10/diego-ph-fIq0tET6llw-unsplash-1.jpg);
     background-size:cover;

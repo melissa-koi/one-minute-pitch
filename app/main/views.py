@@ -1,8 +1,9 @@
 from flask import render_template, redirect, url_for, flash, request, abort
 from . import main
 from flask_login import login_required, current_user
-from .forms import FlaskForm, CommentForm, PostForm
+from .forms import FlaskForm, CommentForm, PostForm, UpdateProfile
 from ..models import Post, User, Comment, Upvote, Downvote
+from .. import db, photos
 
 @main.route('/')
 def index():
@@ -21,7 +22,7 @@ def new_post():
         post_obj = Post(post=post,user_id = user_id, category=category, author = author)
         post_obj.save_post()
         return redirect(url_for('main.posts'))
-    return render_template('pitches.html', form=form)
+    return render_template('add_pitch.html', form=form)
 
 @main.route('/posts')
 @login_required
@@ -31,27 +32,17 @@ def posts():
     user = current_user
     return render_template('posts.html', posts_display = posts_display, posts=posts, likes=likes, user=user)
 
-@main.route('/comment/<int:post_id>', methods=['GET', 'POST'])
+@main.route('/comments', methods=['GET', 'POST'])
 @login_required
-def comment(post_id):
+def comment():
     form = CommentForm()
-    post = Post.query.get(post_id)
-    user = User.query.all()
-    comments = Comment.query.filter_by(post_id=post_id).all()
+    comments = Comment.query.all()
     if form.validate_on_submit():
-        comment = form.comment.data
-        post_id = post_id
-        user_id = current_user._get_current_object().id
-        new_comment = Comment(
-            comment=comment,
-            post_id=post_id,
-            user_id=user_id
-        )
+        new_comment = Comment(comment = form.comment.data)
         new_comment.save()
-        # new_comments = [new_comment]
-        print(new_comments)
-        return redirect(url_for('.comment', post_id=post_id))
-    return render_template('comments.html', form=form, post=post, comments=comments, user=user)
+
+        return redirect(url_for('main.comment'))
+    return render_template('comments.html', form=form, comments=comments)
 
 @main.route('/user/<uname>')
 @login_required
@@ -63,18 +54,18 @@ def profile(uname):
     return render_template('profile/profile.html', user=user)
 
 
-@main.route('/user/<name>/update_profile', methods=['POST', 'GET'])
+@main.route('/user/<uname>/update_profile', methods=['POST', 'GET'])
 @login_required
-def updateprofile(name):
+def update_profile(uname):
     form = UpdateProfile()
-    user = User.query.filter_by(username=name).first()
+    user = User.query.filter_by(username=uname).first()
     if user is None:
-        error = 'The user does not exist'
+        abort(404)
     if form.validate_on_submit():
         user.bio = form.bio.data
-        user.save()
-        return redirect(url_for('.profile', name=name))
-    return render_template('profile/update_profile.html', form=form)
+        user.save_user()
+        return redirect(url_for('.profile', uname=user.username))
+    return render_template('profile/update.html', form=form, uname=uname)
 
 
 @main.route('/like/<int:id>', methods=['POST', 'GET'])
@@ -93,3 +84,14 @@ def downvote(id):
     vm = Downvote(post=post, downvote=1)
     vm.save()
     return redirect(url_for('main.posts'))
+
+@main.route('/user/<uname>/update/pic',methods= ['POST'])
+@login_required
+def update_pic(uname):
+    user = User.query.filter_by(username = uname).first()
+    if 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path = f'photos/{filename}'
+        user.profile_pic_path = path
+        db.session.commit()
+    return redirect(url_for('main.profile',uname=uname))

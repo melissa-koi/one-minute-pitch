@@ -7,7 +7,6 @@
 <div class="container-fluid">
     <div class="jumbotron">
         <h1>Comments page</h1>
-        <a href="/posts"><button class="btn">All Pitches</button></a>
     </div>
     <div class="row col-md-12">
         <div class="col-md-4">
@@ -16,7 +15,15 @@
         <div class="col-md-1"></div>
         <div class="col-md-7">
             <h2 class="text-center text-white">All comments:</h2>
-            <p>{{display_comments(comments)}}</p>
+            <div class="container">
+                <div class="card-group">
+                    {{ for comment in comments }}
+                    <div class = "card text-center" style="border: 1px solid black">
+                        <p class="card-text" style="font-size: 10px">{{ comment.comment }}</p>
+                    </div>
+                    {{ endfor }}
+                </div>
+            </div>
         </div>
     </div>
 
