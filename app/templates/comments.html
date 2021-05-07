@@ -15,15 +15,7 @@
         <div class="col-md-1"></div>
         <div class="col-md-7">
             <h2 class="text-center text-white">All comments:</h2>
-            <div class="container">
-                <div class="card-group">
-                    {{ for comment in comments }}
-                    <div class = "card text-center" style="border: 1px solid black">
-                        <p class="card-text" style="font-size: 10px">{{ comment.comment }}</p>
-                    </div>
-                    {{ endfor }}
-                </div>
-            </div>
+            <p>{{macro.display_comments(comments)}}</p>
         </div>
     </div>
 

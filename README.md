@@ -13,5 +13,12 @@ You will need:
 * A GitHub account
 * Repository used to host the website
 
+## Dependencies and Technologies Used
+* Python3.8
+* Pycharm
+* Flask
+* Heroku
+
+
 ## [Link]( https://m-newshighlight.herokuapp.com/ ) to live webpage
 ## [License](https://github.com/melissa-koi/one-minute-pitch/blob/main/LICENSE)
