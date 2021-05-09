@@ -13,9 +13,6 @@ class PostForm(FlaskForm):
     author = StringField('Author', validators=[Required()])
     submit = SubmitField('Post Pitch')
 
-# class Vote(FlaskForm):
-#     submit = SelectField('Like')
-
 class UpdateProfile(FlaskForm):
     bio = TextAreaField('Tell us about you.',validators = [Required()])
     submit = SubmitField('Post')

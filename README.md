@@ -1,8 +1,8 @@
 # One Minute Pitch
 ### By Melissa Wangui
 
-## Inspiration
-In life, you only have 60 seconds to impress someone. 1 minute can make or break you. How do we make sure that you use your 1 minute to actually say something meaningful?
+## Problem
+In life, you only have 60 seconds to impress someone. 1 minute can make or break you. We at one minute pitch want to make sure that you use your 1 minute to actually say something meaningful.
 
 ## Description
 This is an application that allows users to submit their one minute pitches and other users will vote on them and leave comments to give their feedback on them.
