@@ -1,6 +1,5 @@
 import os
 
-
 class Config:
     """
     General configuration class
@@ -31,9 +30,18 @@ class DevConfig(Config):
     Development configuration class
     """
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://koi:password@localhost/pitches'
 
+class TestConfig(Config):
+    '''
+    Testing configuration child class
+    Args:
+        Config: The parent configuration class with General configuration settings
+    '''
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://koi:password@localhost/pitches'
 
 config_options = {
     'production': ProdConfig,
-    'development': DevConfig
+    'development': DevConfig,
+    'test':TestConfig
 }

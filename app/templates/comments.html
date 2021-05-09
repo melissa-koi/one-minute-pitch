@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 
-{% from 'macros.html' import display_comments%}
+
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
@@ -14,8 +14,7 @@
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-7">
-            <h2 class="text-center text-white">All comments:</h2>
-            <p>{{macro.display_comments(comments)}}</p>
+
         </div>
     </div>
 

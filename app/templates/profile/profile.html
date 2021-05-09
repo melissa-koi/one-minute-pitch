@@ -10,8 +10,8 @@
             <!--Displaying user bio-->
             {% if user.bio %}
             <p> {{user.bio}}</p>
-
-            {%else%}
+            <a href="{{url_for('main.update_profile', uname = user.username)}}" style="text-decoration:none" >Edit profile</a>
+                {%else%}
             <p> {{user.username| capitalize}} has no bio </p>
             <a href="{{url_for('main.update_profile', uname = user.username)}}" style="text-decoration:none" >Edit profile</a>
 
